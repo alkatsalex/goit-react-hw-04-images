@@ -1,16 +1,34 @@
-export const App = () => {
+import { useState } from 'react';
+import Searchbar from './Searchbar/Searchbar.jsx';
+import ImageGallery from './ImageGallery/ImageGallery.1.jsx';
+import Modal from './Modal/Modal.jsx';
+
+export function App() {
+  const [searchTag, setSearchTag] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalImg, setModalImg] = useState('');
+
+  /////////////////////////////////////
+  const hendleFormSubmit = tag => {
+    setSearchTag(tag);
+  };
+
+  const handleImageClick = imageUrl => {
+    setIsOpen(true);
+    setModalImg(imageUrl);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setModalImg('');
+  };
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div>
+      <Searchbar onSubmit={hendleFormSubmit} />
+      {<ImageGallery searchTag={searchTag} onClick={handleImageClick} />}
+
+      {isOpen && <Modal url={modalImg} onClose={handleCloseModal} />}
     </div>
   );
-};
+}
