@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Searchbar from './Searchbar/Searchbar.jsx';
-import ImageGallery from './ImageGallery/ImageGallery.1.jsx';
+import ImageGallery from './ImageGallery/ImageGallery.jsx';
 import Modal from './Modal/Modal.jsx';
 
 export function App() {

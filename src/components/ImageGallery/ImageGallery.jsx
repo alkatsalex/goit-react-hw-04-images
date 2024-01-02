@@ -5,7 +5,7 @@ import fetchAPI from '../API/fetchAPI.js';
 import { Audio } from 'react-loader-spinner';
 
 export default function ImageGallery({ searchTag, onClick }) {
-  const [searchResult, setSearchResult] = useState([1, 2, 3]);
+  const [searchResult, setSearchResult] = useState([]);
   const [caunter, setCaunter] = useState(1);
   const [loading, setLoading] = useState(false);
   const [searchNow, setSearchNow] = useState('');
@@ -14,12 +14,15 @@ export default function ImageGallery({ searchTag, onClick }) {
   const fetchImg = useCallback(async () => {
     if (searchNow !== searchTag) {
       setSearchResult([]);
+      setSearchNow(searchTag);
+
+      return;
     }
 
     setLoading(true);
     try {
       const { hits, total } = await fetchAPI(searchTag, caunter);
-      setSearchResult([1, 2, 3]);
+
       if (total) {
         const uniqueImages = hits.filter(
           newImage =>
@@ -36,14 +39,14 @@ export default function ImageGallery({ searchTag, onClick }) {
       throw error;
     } finally {
       setLoading(false);
-      setSearchNow(searchTag);
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     }
-  }, [searchNow, searchTag, caunter, searchResult]);
+  }, [searchTag, caunter, searchNow]);
 
   useEffect(() => {
-    fetchImg();
-  }, [searchTag, caunter, fetchImg, searchResult]);
+    if (searchTag) {
+      fetchImg();
+    }
+  }, [searchTag, caunter, fetchImg]);
 
   const hendleClickOnBtnLoadeMore = () => {
     setCaunter(caunter + 1);
