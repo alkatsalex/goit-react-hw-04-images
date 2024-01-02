@@ -13,7 +13,7 @@ export default function ImageGallery({ searchTag, onClick }) {
   /////////////////////////////////////
   const fetchImg = useCallback(async () => {
     if (searchNow !== searchTag) {
-      setSearchResult([]);
+      setSearchResult(s => []);
       setSearchNow(searchTag);
 
       return;
