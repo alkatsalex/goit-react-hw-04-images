@@ -4,7 +4,7 @@ import ImageGallery from './ImageGallery/ImageGallery.jsx';
 import Modal from './Modal/Modal.jsx';
 
 export function App() {
-  const [searchTag, setSearchTag] = useState('');
+  const [searchTag, setSearchTag] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [modalImg, setModalImg] = useState('');
 

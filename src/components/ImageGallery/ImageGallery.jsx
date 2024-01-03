@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem.jsx';
 import Button from '../Button/Button.jsx';
 import fetchAPI from '../API/fetchAPI.js';
-import { Audio } from 'react-loader-spinner';
+import { Blocks } from 'react-loader-spinner';
+import { nanoid } from 'nanoid';
 
 export default function ImageGallery({ searchTag, onClick }) {
   const [searchResult, setSearchResult] = useState([]);
@@ -11,42 +12,105 @@ export default function ImageGallery({ searchTag, onClick }) {
   const [searchNow, setSearchNow] = useState('');
 
   /////////////////////////////////////
-  const fetchImg = useCallback(async () => {
-    if (searchNow !== searchTag) {
-      setSearchResult(s => []);
-      setSearchNow(searchTag);
 
-      return;
-    }
+  // const fetchImg = () => {
+  //   if (searchNow !== searchTag) {
+  //     setSearchResult([]);
+  //     setSearchNow(searchTag);
 
-    setLoading(true);
-    try {
-      const { hits, total } = await fetchAPI(searchTag, caunter);
+  //     return;
+  //   }
 
-      if (total) {
-        const uniqueImages = hits.filter(
-          newImage =>
-            !searchResult.some(
-              existingImage => existingImage.id === newImage.id
-            )
-        );
+  //   setLoading(true);
+  //   try {
+  //     const { hits, total } = fetchAPI(searchTag, caunter);
 
-        setSearchResult([...searchResult, ...uniqueImages]);
-      } else {
-        alert('Nothing found, try again!');
-      }
-    } catch (error) {
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, [searchTag, caunter, searchNow]);
+  //     if (total) {
+  //       const uniqueImages = hits.filter(
+  //         newImage =>
+  //           !searchResult.some(
+  //             existingImage => existingImage.id === newImage.id
+  //           )
+  //       );
+
+  //       setSearchResult([...searchResult, ...uniqueImages]);
+  //     } else {
+  //       alert('Nothing found, try again!');
+  //     }
+  //   } catch (error) {
+  //     throw error;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (!searchTag) {
+  //     return;
+  //   }
+
+  //   if (searchNow !== searchTag) {
+  //     setSearchResult([]);
+  //     setSearchNow(searchTag);
+  //   }
+
+  //   api
+  //     .fetchAPI(searchTag, caunter)
+  //     .then(data => {
+  //       const { hits, total } = data;
+
+  //       if (total) {
+  //         const uniqueImages = hits.filter(
+  //           newImage =>
+  //             !searchResult.some(
+  //               existingImage => existingImage.id === newImage.id
+  //             )
+  //         );
+
+  //         setSearchResult([...searchResult, ...uniqueImages]);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }, [searchTag, caunter, searchResult]);
 
   useEffect(() => {
+    const fetchImg = async () => {
+      if (searchNow !== searchTag) {
+        console.log(searchNow);
+        console.log(searchTag);
+        setSearchResult([]);
+        setSearchNow(searchTag);
+        setCaunter(1);
+        console.log('qweqweqweqweqweqweqweqweqweqweqweqeqweqweqweqweqwe');
+
+        return;
+      }
+      setLoading(true);
+      try {
+        const { hits, total } = await fetchAPI(searchTag, caunter);
+        console.log(hits);
+        if (total) {
+          const uniqueImages = hits.map(el => {
+            return (el = { ...el, id: nanoid() });
+          });
+          console.log(uniqueImages);
+          setSearchResult(prev => [...prev, ...uniqueImages]);
+        } else {
+          alert('Nothing found, try again!');
+        }
+      } catch (error) {
+        throw error;
+      } finally {
+        setSearchNow(searchTag);
+        setLoading(false);
+      }
+    };
     if (searchTag) {
       fetchImg();
     }
-  }, [searchTag, caunter, fetchImg]);
+  }, [searchTag, caunter, searchNow]);
 
   const hendleClickOnBtnLoadeMore = () => {
     setCaunter(caunter + 1);
@@ -68,15 +132,17 @@ export default function ImageGallery({ searchTag, onClick }) {
           })}
       </ul>
       {loading && (
-        <Audio
-          height="80"
-          width="80"
-          radius="9"
-          color="blue"
-          ariaLabel="loading"
-          wrapperStyle
-          wrapperClass
-        />
+        <div className="thumb">
+          <Blocks
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            visible={true}
+          />
+        </div>
       )}
 
       {searchResult.length > 0 && !loading && (
