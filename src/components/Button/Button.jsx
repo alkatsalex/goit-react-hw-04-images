@@ -4,7 +4,7 @@ export default function Button({ onClick }) {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        margin: '30px',
+        margin: '35px',
       }}
     >
       <button

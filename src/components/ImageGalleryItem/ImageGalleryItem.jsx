@@ -1,6 +1,7 @@
 export default function ImageGalleryItem({
   webformatURL,
   largeImageURL,
+  tags,
   onClick,
 }) {
   return (
@@ -10,7 +11,7 @@ export default function ImageGalleryItem({
         onClick(largeImageURL);
       }}
     >
-      <img className="ImageGalleryItem-image" src={webformatURL} alt="img" />
+      <img className="ImageGalleryItem-image" src={webformatURL} alt="" />
     </li>
   );
 }

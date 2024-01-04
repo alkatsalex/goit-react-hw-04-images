@@ -9,7 +9,7 @@ export default function Searchbar({ onSubmit }) {
   const handleSubmit = e => {
     e.preventDefault();
     if (search.trim() === '') {
-      alert('ops');
+      alert('Ops! Something went wrong, enter a query in the search term');
       return;
     }
     onSubmit(search);
