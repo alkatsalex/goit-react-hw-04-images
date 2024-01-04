@@ -40,15 +40,17 @@ import { useEffect } from 'react';
 
 export default function Modal({ url, onClose }) {
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return window.removeEventListener('keydown', handleKeyDown);
-  });
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
 
-  const handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
   const handleImageClick = e => {
     e.stopPropagation();
