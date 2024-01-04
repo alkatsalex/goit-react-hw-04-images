@@ -78,24 +78,20 @@ export default function ImageGallery({ searchTag, onClick }) {
   useEffect(() => {
     const fetchImg = async () => {
       if (searchNow !== searchTag) {
-        console.log(searchNow);
-        console.log(searchTag);
         setSearchResult([]);
         setSearchNow(searchTag);
         setCaunter(1);
-        console.log('qweqweqweqweqweqweqweqweqweqweqweqeqweqweqweqweqwe');
 
         return;
       }
       setLoading(true);
       try {
         const { hits, total } = await fetchAPI(searchTag, caunter);
-        console.log(hits);
+
         if (total) {
           const uniqueImages = hits.map(el => {
             return (el = { ...el, id: nanoid() });
           });
-          console.log(uniqueImages);
           setSearchResult(prev => [...prev, ...uniqueImages]);
         } else {
           alert('Nothing found, try again!');
